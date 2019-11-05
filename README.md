@@ -1,6 +1,7 @@
 ### I learned:
 
     - How to handle the user inputs
+    - useReducer from react
 
 ### Dependencies
 
