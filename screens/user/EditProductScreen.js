@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   ScrollView,
@@ -6,27 +6,27 @@ import {
   TextInput,
   StyleSheet,
   Platform
-} from 'react-native';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import { useSelector, useDispatch } from 'react-redux';
+} from "react-native";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { useSelector, useDispatch } from "react-redux";
 
-import HeaderButton from '../../components/UI/HeaderButton';
-import * as productsActions from '../../store/actions/products';
+import HeaderButton from "../../components/UI/HeaderButton";
+import * as productsActions from "../../store/actions/products";
 
 const EditProductScreen = props => {
-  const prodId = props.navigation.getParam('productId');
+  const prodId = props.navigation.getParam("productId");
   const editedProduct = useSelector(state =>
     state.products.userProducts.find(prod => prod.id === prodId)
   );
   const dispatch = useDispatch();
 
-  const [title, setTitle] = useState(editedProduct ? editedProduct.title : '');
+  const [title, setTitle] = useState(editedProduct ? editedProduct.title : "");
   const [imageUrl, setImageUrl] = useState(
-    editedProduct ? editedProduct.imageUrl : ''
+    editedProduct ? editedProduct.imageUrl : ""
   );
-  const [price, setPrice] = useState('');
+  const [price, setPrice] = useState("");
   const [description, setDescription] = useState(
-    editedProduct ? editedProduct.description : ''
+    editedProduct ? editedProduct.description : ""
   );
 
   const submitHandler = useCallback(() => {
@@ -72,6 +72,7 @@ const EditProductScreen = props => {
               style={styles.input}
               value={price}
               onChangeText={text => setPrice(text)}
+              keyboardType="decimal-pad"
             />
           </View>
         )}
@@ -89,17 +90,17 @@ const EditProductScreen = props => {
 };
 
 EditProductScreen.navigationOptions = navData => {
-  const submitFn = navData.navigation.getParam('submit');
+  const submitFn = navData.navigation.getParam("submit");
   return {
-    headerTitle: navData.navigation.getParam('productId')
-      ? 'Edit Product'
-      : 'Add Product',
+    headerTitle: navData.navigation.getParam("productId")
+      ? "Edit Product"
+      : "Add Product",
     headerRight: (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Save"
           iconName={
-            Platform.OS === 'android' ? 'md-checkmark' : 'ios-checkmark'
+            Platform.OS === "android" ? "md-checkmark" : "ios-checkmark"
           }
           onPress={submitFn}
         />
@@ -113,16 +114,16 @@ const styles = StyleSheet.create({
     margin: 20
   },
   formControl: {
-    width: '100%'
+    width: "100%"
   },
   label: {
-    fontFamily: 'open-sans-bold',
+    fontFamily: "open-sans-bold",
     marginVertical: 8
   },
   input: {
     paddingHorizontal: 2,
     paddingVertical: 5,
-    borderBottomColor: '#ccc',
+    borderBottomColor: "#ccc",
     borderBottomWidth: 1
   }
 });
