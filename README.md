@@ -2,6 +2,7 @@
 
     - How to handle the user inputs
     - useReducer from react
+    - Store & Fetch data through a remote API
 
 ### Dependencies
 
