@@ -1,8 +1,10 @@
 import Product from "../../models/product";
 
 const PRODUCTS_URL = "https://rn-shop-demo-app.firebaseio.com/products.json";
+const PRODUCTS_CREATE_URL =
+  "https://rn-shop-demo-app.firebaseio.com/products.json?auth=_token_";
 const PRODUCTS_UPDATE_URL =
-  "https://rn-shop-demo-app.firebaseio.com/products/_productId_.json";
+  "https://rn-shop-demo-app.firebaseio.com/products/_productId_.json?auth=_token_";
 export const DELETE_PRODUCT = "DELETE_PRODUCT";
 export const CREATE_PRODUCT = "CREATE_PRODUCT";
 export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
@@ -43,9 +45,13 @@ export const fetchProducts = () => {
 };
 
 export const deleteProduct = productId => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      PRODUCTS_UPDATE_URL.replace("_productId_", productId),
+      PRODUCTS_UPDATE_URL.replace("_productId_", productId).replace(
+        "_token_",
+        token
+      ),
       {
         method: "DELETE"
       }
@@ -60,20 +66,23 @@ export const deleteProduct = productId => {
 };
 
 export const createProduct = (title, description, imageUrl, price) => {
-  return async dispatch => {
-    // any async code you want!
-    const response = await fetch(PRODUCTS_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        title,
-        description,
-        imageUrl,
-        price
-      })
-    });
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const response = await fetch(
+      PRODUCTS_CREATE_URL.replace("_token_", token),
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          imageUrl,
+          price
+        })
+      }
+    );
 
     const resData = await response.json();
 
@@ -91,9 +100,10 @@ export const createProduct = (title, description, imageUrl, price) => {
 };
 
 export const updateProduct = (id, title, description, imageUrl) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      PRODUCTS_UPDATE_URL.replace("_productId_", id),
+      PRODUCTS_UPDATE_URL.replace("_productId_", id).replace("_token_", token),
       {
         method: "PATCH",
         headers: {
