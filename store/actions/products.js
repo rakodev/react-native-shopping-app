@@ -1,6 +1,8 @@
 import Product from "../../models/product";
 
 const PRODUCTS_URL = "https://rn-shop-demo-app.firebaseio.com/products.json";
+const PRODUCTS_UPDATE_URL =
+  "https://rn-shop-demo-app.firebaseio.com/products/_productId_.json";
 export const DELETE_PRODUCT = "DELETE_PRODUCT";
 export const CREATE_PRODUCT = "CREATE_PRODUCT";
 export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
@@ -41,7 +43,13 @@ export const fetchProducts = () => {
 };
 
 export const deleteProduct = productId => {
-  return { type: DELETE_PRODUCT, pid: productId };
+  return async dispatch => {
+    await fetch(PRODUCTS_UPDATE_URL.replace("_productId_", productId), {
+      method: "DELETE"
+    });
+
+    dispatch({ type: DELETE_PRODUCT, pid: productId });
+  };
 };
 
 export const createProduct = (title, description, imageUrl, price) => {
@@ -76,13 +84,27 @@ export const createProduct = (title, description, imageUrl, price) => {
 };
 
 export const updateProduct = (id, title, description, imageUrl) => {
-  return {
-    type: UPDATE_PRODUCT,
-    pid: id,
-    productData: {
-      title,
-      description,
-      imageUrl
-    }
+  return async dispatch => {
+    await fetch(PRODUCTS_UPDATE_URL.replace("_productId_", id), {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        imageUrl
+      })
+    });
+
+    dispatch({
+      type: UPDATE_PRODUCT,
+      pid: id,
+      productData: {
+        title,
+        description,
+        imageUrl
+      }
+    });
   };
 };
