@@ -44,9 +44,16 @@ export const fetchProducts = () => {
 
 export const deleteProduct = productId => {
   return async dispatch => {
-    await fetch(PRODUCTS_UPDATE_URL.replace("_productId_", productId), {
-      method: "DELETE"
-    });
+    const response = await fetch(
+      PRODUCTS_UPDATE_URL.replace("_productId_", productId),
+      {
+        method: "DELETE"
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
 
     dispatch({ type: DELETE_PRODUCT, pid: productId });
   };
@@ -85,17 +92,24 @@ export const createProduct = (title, description, imageUrl, price) => {
 
 export const updateProduct = (id, title, description, imageUrl) => {
   return async dispatch => {
-    await fetch(PRODUCTS_UPDATE_URL.replace("_productId_", id), {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        title,
-        description,
-        imageUrl
-      })
-    });
+    const response = await fetch(
+      PRODUCTS_UPDATE_URL.replace("_productId_", id),
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          imageUrl
+        })
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
 
     dispatch({
       type: UPDATE_PRODUCT,
