@@ -1,0 +1,5 @@
+{
+    "sync.autoUpload": true,
+    "sync.autoDownload": true,
+    "sync.quietSync": true
+}
